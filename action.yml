@@ -1,3 +1,4 @@
+# pr이 아닐 경우 이벤트 돌지 않게
 name: 'taetaetae Hello World'
 description: 'Greet someone'
 inputs:
@@ -19,7 +20,7 @@ runs:
   steps:
     - shell: bash
       id: release_notes
-      run: |
+      run: | # base-branch, compare-branch 파라미터로 안받고 바로 되게
           git checkout ${{ inputs.base-branch }}
           git_log=$(git log --pretty=format:"%s %b" ${{ inputs.base-branch }}..${{ inputs.compare-branch }}\
               | grep -E "Merge pull request #[0-9]+" | sed 's/Merge pull request #//g' | sed 's/ from [^ ]*//'\
