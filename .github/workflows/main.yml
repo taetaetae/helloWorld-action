@@ -7,9 +7,13 @@ jobs:
     name: A job to say hello
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - id: foo
         uses: taetaetae/helloWorld@v1.1
         with:
-          who-to-greet: 'Mona the Octocat'
-      - run: echo random-number ${{ steps.foo.outputs.random-number }}
+          base-branch: master
+          compare-branch: rb
+          token: ??
+      - run: echo ${{ steps.foo.outputs.diff-body }}
         shell: bash
