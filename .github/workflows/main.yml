@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - id: action-test
-        uses: taetaetae/helloWorld@v1.1
+        uses: taetaetae/helloWorld@main
         with:
           token: ${{ secrets.TOKEN }}
       - run: echo ${{ steps.foo.outputs.diff-body }}
