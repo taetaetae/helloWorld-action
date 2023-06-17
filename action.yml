@@ -1,38 +1,14 @@
-# pr이 아닐 경우 이벤트 돌지 않게
 name: 'taetaetae Hello World'
-description: 'Greet someone'
 inputs:
-  base-branch: # master
-    description: 'Base branch for pullRequest'
-    required: true
-  compare-branch: # rb
-    description: 'Compare branch of pullRequest'
-    required: true
   token:
     description: 'Personal access token'
     required: true
+  api-domain:
+    required: false
+    default: "api.github.com"
 outputs:
-  diff-body:
-    description: "diff body"
-    value: ${{ steps.release_notes.outputs.value }}
+  time:
+    description: 'The time we greeted you'
 runs:
-  using: "composite"
-  steps:
-    - shell: bash
-      id: release_notes
-      run: | # base-branch, compare-branch 파라미터로 안받고 바로 되게
-          git checkout ${{ inputs.base-branch }}
-          git_log=$(git log --pretty=format:"%s %b" ${{ inputs.base-branch }}..${{ inputs.compare-branch }}\
-              | grep -E "Merge pull request #[0-9]+" | sed 's/Merge pull request #//g' | sed 's/ from [^ ]*//'\
-              | while read -r line; do
-                pull_request_number=$(echo "$line" | awk '{print $1}')
-                api_response=$(curl -s -H "Authorization: token ${{ inputs.token }}" ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/pulls/$pull_request_number)
-                login=$(echo "$api_response" | grep -m1 '"login":' | sed 's/.*: "\(.*\)",/\1/')
-                echo "$line @$login"
-              done | sed 's/^/\\- #/')
-          git_log="${git_log//'%'/'%25'}"
-          git_log="${git_log//$'\n'/'%0A'}"
-          git_log="${git_log//$'\r'/'%0D'}"
-          default_body="no pullRequest"
-          [ -z "$git_log" ] && git_log="$default_body"
-          echo "::set-output name=value::$git_log"
+  using: 'node12'
+  main: 'index.js'
