@@ -17,6 +17,7 @@ jobs:
       - id: action-test
         uses: taetaetae/change-summarizer@f/init
         with:
+          token: ${{ secrets.TOKEN }}
           base: master
           compare: ${{ steps.extract_branch.outputs.branch }}
       - run: echo "${{ steps.extract_branch.outputs.branch }}"
