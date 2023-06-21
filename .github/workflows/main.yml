@@ -10,9 +10,14 @@ jobs:
     name: A job to say hello
     steps:
       - uses: actions/checkout@v3
+      - name: Extract branch name # 아래에서 사용될 target branch name 추출
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch  
       - id: action-test
         uses: taetaetae/change-summarizer@f/init
         with:
-          token: ${{ secrets.TOKEN }}
-      - run: echo "${{ steps.action-test.outputs.time }}"
+          base: master
+          compare: ${{ github.ref }} 
+      - run: echo "${{ steps.extract_branch.outputs.branch }}"
         shell: bash
