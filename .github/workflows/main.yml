@@ -11,8 +11,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - id: action-test
-        uses: taetaetae/hello-world-javascript-action@main
+        uses: taetaetae/change-summarizer@f/init
         with:
           token: ${{ secrets.TOKEN }}
-      - run: echo ${{ steps.action-test.outputs.time }}
+      - run: echo "${{ steps.action-test.outputs.time }}"
         shell: bash
