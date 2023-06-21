@@ -18,6 +18,6 @@ jobs:
         uses: taetaetae/change-summarizer@f/init
         with:
           base: master
-          compare: ${{ github.ref }} 
+          compare: ${{ steps.extract_branch.outputs.branch }}
       - run: echo "${{ steps.extract_branch.outputs.branch }}"
         shell: bash
